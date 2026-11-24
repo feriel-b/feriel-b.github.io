@@ -1,14 +1,16 @@
-import * as THREE from 'three';
+import {
+  BufferAttribute, BufferGeometry, Group, PerspectiveCamera, Points, PointsMaterial, Scene, Vector3, WebGLRenderer,
+} from 'three';
 
 // Latent-space background: one point cloud per project. Purely decorative; the cards carry the content.
 const COLORS = [0xe23c64, 0x2a5be0, 0x0e9f78, 0xd9921a, 0x7b3fd8, 0x1a8fd6, 0xc2410c];
-const EDGE = new THREE.Vector3(2.6, 0, 0);
-const CENTERS = [[-1, -3, -1], [8, 6, 3], [10, -5, -4], [-4, -6, 3], [2, 8, -8], [6, -1, 6], [-7, 1, 5]];
+const EDGE = new Vector3(2.6, 0, 0);
+const CENTERS = [[-1, -3, -1], [8, 6, 3], [10, -5, -4], [-4, -6, 3], [2, 8, -8], [6, -1, 6], [13, 1, -2]];
 
 export function initScene(canvasHost, cards, labelHost) {
   let renderer;
   try {
-    renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+    renderer = new WebGLRenderer({ antialias: true, alpha: true });
   } catch (e) {
     canvasHost.remove();
     return; // no WebGL: the page still works as plain cards
@@ -18,10 +20,10 @@ export function initScene(canvasHost, cards, labelHost) {
   renderer.setClearColor(0x000000, 0);
   canvasHost.appendChild(renderer.domElement);
 
-  const scene = new THREE.Scene();
-  const camera = new THREE.PerspectiveCamera(50, 1, 0.1, 200);
+  const scene = new Scene();
+  const camera = new PerspectiveCamera(50, 1, 0.1, 200);
   camera.position.set(0, 1, 28);
-  const group = new THREE.Group();
+  const group = new Group();
   scene.add(group);
 
   let seed = 7;
@@ -35,20 +37,21 @@ export function initScene(canvasHost, cards, labelHost) {
       arr[k * 3 + 1] = c[1] + gauss() * 1.4;
       arr[k * 3 + 2] = c[2] + gauss() * 1.7;
     }
-    const geo = new THREE.BufferGeometry();
-    geo.setAttribute('position', new THREE.BufferAttribute(arr, 3));
-    const mat = new THREE.PointsMaterial({ size: 0.2, color: COLORS[i % COLORS.length], transparent: true, opacity: 0.85, depthWrite: false });
-    const pts = new THREE.Points(geo, mat);
+    const geo = new BufferGeometry();
+    geo.setAttribute('position', new BufferAttribute(arr, 3));
+    const mat = new PointsMaterial({ size: 0.2, color: COLORS[i % COLORS.length], transparent: true, opacity: 0.85, depthWrite: false });
+    const pts = new Points(geo, mat);
     group.add(pts);
     const label = document.createElement('button');
     label.className = 'plabel';
+    label.tabIndex = -1; // the cards are the keyboard path; labels are a mouse shortcut
     label.textContent = card.dataset.name;
     label.addEventListener('click', () => {
       card.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'center' });
       card.querySelector('details').open = true;
     });
     labelHost.appendChild(label);
-    return { card, mat, label, center: new THREE.Vector3(...c), tags: card.dataset.tags.split('|'), level: 0, target: 0 };
+    return { card, mat, label, center: new Vector3(...c), tags: card.dataset.tags.split('|'), level: 0, target: 0 };
   });
 
   // Highlight state is driven by the cards (hover), the hero words (hover on mouse, tap/click on touch)
@@ -100,7 +103,7 @@ export function initScene(canvasHost, cards, labelHost) {
     mouseOn = e.pointerType === 'mouse'; px = e.clientX; py = e.clientY;
   }, { passive: true });
   document.addEventListener('pointerleave', () => { mouseOn = false; }, { passive: true });
-  const edge = new THREE.Vector3();
+  const edge = new Vector3();
   // Mouse over a cluster (screen-space distance to its centre) highlights it and its card.
   function pickCluster() {
     let best = null, bestScore = 1;
@@ -112,7 +115,7 @@ export function initScene(canvasHost, cards, labelHost) {
     if (id !== clusterId) { clusterId = id; refresh(); document.body.style.cursor = id ? 'pointer' : ''; }
   }
 
-  const v = new THREE.Vector3();
+  const v = new Vector3();
   function resize() {
     const w = innerWidth, h = innerHeight;
     renderer.setSize(w, h);
