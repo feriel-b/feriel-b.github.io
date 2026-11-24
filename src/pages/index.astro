@@ -1,19 +1,30 @@
 ---
 import projects from '../data/projects.json';
-const tags = [...new Set(projects.flatMap((p) => p.tags))].sort();
+const site = 'https://feriel-b.github.io/';
+const desc = 'Feriel Bouguecha, Master 2 data science & AI: LLMs, RAG, explainability and MLOps projects.';
 ---
 <!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Feriel Bouguecha · Data science & ML</title>
-  <meta name="description" content="Portfolio of Feriel Bouguecha: LLMs, RAG, MLOps and applied machine learning." />
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='7' fill='%232d5bff'/><text x='16' y='23' font-size='20' text-anchor='middle' fill='white' font-family='sans-serif'>F</text></svg>" />
+  <title>Feriel Bouguecha · Data science & AI</title>
+  <meta name="description" content={desc} />
+  <meta name="theme-color" content="#c7b3e9" />
+  <link rel="canonical" href={site} />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content={site} />
+  <meta property="og:title" content="Feriel Bouguecha · Data science & AI" />
+  <meta property="og:description" content={desc} />
+  <meta property="og:image" content={site + 'og.jpg'} />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='7' fill='%23c7b3e9'/><text x='16' y='23' font-size='20' text-anchor='middle' fill='%2316193a' font-family='sans-serif'>F</text></svg>" />
 </head>
 <body>
   <div id="scene" aria-hidden="true"></div>
-  <div id="labels"></div>
+  <div id="labels" aria-hidden="true"></div>
 
   <header class="wrap hero">
     <p class="eyebrow">Feriel Bouguecha · Master 2 · Data science &amp; AI</p>
@@ -67,16 +78,17 @@ const tags = [...new Set(projects.flatMap((p) => p.tags))].sort();
   <footer class="wrap foot">© {new Date().getFullYear()} Feriel Bouguecha</footer>
 
   <script>
-    import { initScene } from '../scripts/scene.js';
-    initScene(
+    // Load the 3D layer after the text has painted, so the page is readable immediately.
+    const start = () => import('../scripts/scene.js').then(({ initScene }) => initScene(
       document.getElementById('scene'),
       [...document.querySelectorAll('.card')],
       document.getElementById('labels'),
-    );
+    ));
+    if ('requestIdleCallback' in window) requestIdleCallback(start, { timeout: 1200 }); else setTimeout(start, 200);
   </script>
 
   <style is:global>
-    :root { --fg:#16193a; --mut:#474d73; --card:rgba(255,255,255,.5); --line:rgba(255,255,255,.75); --acc:#3a4fd8; --chip:rgba(30,30,90,.09); }
+    :root { --fg:#16193a; --mut:#3b4066; --card:rgba(255,255,255,.5); --line:rgba(255,255,255,.75); --acc:#2a33a0; --chip:rgba(30,30,90,.09); }
     * { box-sizing: border-box; }
     html { min-height:100%; }
     body { margin:0; min-height:100vh; color:var(--fg); font:16px/1.55 system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
