@@ -184,8 +184,47 @@
       "Parsed hundreds of SAS programs, stripping comments and finding permanent libraries through their LIBNAME statements.",
       "Extracted table-level reads and writes into Excel reports to plan the migration to Viya."
     ],
-    "links": [],
-    "note": "Client material: description only.",
+    "links": [
+      {
+        "label": "Migration project",
+        "url": "https://github.com/feriel-b/SAS_migration_project"
+      },
+      {
+        "label": "Extraction scripts",
+        "url": "https://github.com/feriel-b/SAS_extraction"
+      }
+    ],
+    "note": "Parsing scripts and project code are public; no client data is described.",
     "short": "EY SAS migration"
+  },
+  {
+    "id": "edu-r",
+    "short": "Student performance (R)",
+    "title": "What drives student exam scores? A nonparametric study in R",
+    "pitch": "A CRISP-DM statistical study choosing methods from normality tests instead of assuming them.",
+    "context": "Statistics project",
+    "kind": "Course project",
+    "tags": [
+      "Statistics"
+    ],
+    "stack": [
+      "R",
+      "ggplot2",
+      "rstatix",
+      "VIM",
+      "corrplot"
+    ],
+    "role": "Solo project.",
+    "did": [
+      "Cleaned the data with IQR outlier treatment and KNN imputation (k=5).",
+      "Tested normality (Jarque-Bera, Q-Q plots), found most variables non-normal, and switched to Spearman correlation, Kruskal-Wallis and Dunn's post-hoc tests.",
+      "Found attendance (rho = 0.69) and hours studied (rho = 0.49) the strongest correlates of exam score, while gender and school type were not significant."
+    ],
+    "links": [
+      {
+        "label": "Code on GitHub",
+        "url": "https://github.com/feriel-b/Educational-Performance-Analysis"
+      }
+    ]
   }
 ]

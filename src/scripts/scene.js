@@ -1,8 +1,8 @@
 import * as THREE from 'three';
 
 // Latent-space background: one point cloud per project. Purely decorative; the cards carry the content.
-const COLORS = [0xe23c64, 0x2a5be0, 0x0e9f78, 0xd9921a, 0x7b3fd8, 0x1a8fd6];
-const CENTERS = [[-1, -3, -1], [8, 6, 3], [10, -5, -4], [-4, -6, 3], [2, 8, -8], [6, -1, 6]];
+const COLORS = [0xe23c64, 0x2a5be0, 0x0e9f78, 0xd9921a, 0x7b3fd8, 0x1a8fd6, 0xc2410c];
+const CENTERS = [[-1, -3, -1], [8, 6, 3], [10, -5, -4], [-4, -6, 3], [2, 8, -8], [6, -1, 6], [-7, 1, 5]];
 
 export function initScene(canvasHost, cards, labelHost) {
   let renderer;

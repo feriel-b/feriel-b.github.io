@@ -49,6 +49,18 @@ const tags = [...new Set(projects.flatMap((p) => p.tags))].sort();
         ))}
       </div>
     </section>
+    <section aria-labelledby="more" class="more">
+      <h2 id="more">More work</h2>
+      <ul class="morelist">
+        <li><a href="https://github.com/feriel-b/DataPreparation_Myocardial-infarction-complications-ML"><strong>Myocardial infarction complications</strong></a> · data-preparation mini project on the UCI heart-attack dataset: cleaning, scaling, feature selection (mutual information, chi-square) and PCA.</li>
+        <li><strong>Emotional speech with diffusion models</strong> · deep-learning notebooks on emotion detection and generation with the EmoDB and RAVDESS datasets (private repository).</li>
+      </ul>
+    </section>
+
+    <section aria-labelledby="contact" class="more">
+      <h2 id="contact">Contact</h2>
+      <p><a href="https://github.com/feriel-b">GitHub</a></p>
+    </section>
   </main>
 
   <footer class="wrap foot">© {new Date().getFullYear()} Feriel Bouguecha</footer>
@@ -100,6 +112,7 @@ const tags = [...new Set(projects.flatMap((p) => p.tags))].sort();
     .role { margin:10px 0 0; }
     .note { font-size:13.5px; color:var(--mut); font-style:italic; }
     .plinks a { margin-right:14px; font-weight:600; }
+    .more { margin-top:20px; background:var(--card); border:1px solid var(--line); border-radius:18px; padding:4px 22px 18px; backdrop-filter:blur(16px); } .more h2 { margin-top:16px; } .morelist { padding-left:20px; margin:0; } .morelist li { margin-bottom:10px; max-width:46em; }
     .foot { padding-top:48px; padding-bottom:36px; color:var(--mut); font-size:14px; }
     @media (max-width:700px) { #scene { opacity:.3; } }
     @media (prefers-reduced-motion: reduce) { .card { transition:none; } .card:hover, .card.hit { transform:none; } }
