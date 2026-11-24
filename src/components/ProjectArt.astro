@@ -1,0 +1,62 @@
+---
+// Small decorative motif per project, drawn in the project's cluster colour.
+interface Props { id: string; color: string }
+const { id, color: c } = Astro.props;
+const bars = [0.9, -0.35, 0.6, 0.2, -0.7, 0.45];
+const blobs = [[60, 30], [140, 46], [228, 26]];
+let seed = 3;
+const rnd = () => ((seed = (seed * 16807) % 2147483647) / 2147483647);
+const pts = blobs.flatMap(([x, y]) => Array.from({ length: 16 }, () => [x + (rnd() - 0.5) * 46, y + (rnd() - 0.5) * 26]));
+const wave = Array.from({ length: 61 }, (_, i) => `${i * 5},${35 + Math.sin(i * 0.55) * (8 + 14 * Math.abs(Math.sin(i * 0.13)))}`).join(' ');
+---
+<svg class="art" viewBox="0 0 300 70" role="img" aria-hidden="true" style={`--c:${c}`}>
+  {id === 'llm-tabular' && (<g>
+    {[0, 1, 2].map((r) => [0, 1, 2, 3].map((k) => <rect x={14 + k * 18} y={12 + r * 16} width="15" height="13" rx="2" class="soft" />))}
+    <path d="M100 35h30" class="line arrow" />
+    {[0, 1, 2].map((r) => <rect x="140" y={16 + r * 13} width={[60, 46, 54][r]} height="6" rx="3" class="soft" />)}
+    {bars.map((v, i) => <rect x={222 + i * 12} y={v > 0 ? 35 - v * 24 : 35} width="8" height={Math.abs(v) * 24} rx="2" class={v > 0 ? 'fill' : 'neg'} />)}
+  </g>)}
+  {id === 'due-diligence' && (<g>
+    {[0, 1, 2].map((i) => <rect x={14 + i * 6} y={10 + i * 5} width="34" height="42" rx="3" class="soft" />)}
+    <path d="M70 35h22" class="line" />
+    {[[115, 20], [135, 48], [158, 28], [178, 50], [190, 18]].map(([x, y]) => <circle cx={x} cy={y} r="5" class="fill" />)}
+    <path d="M115 20L135 48L158 28L178 50M158 28L190 18M135 48L178 50" class="line" />
+    <path d="M212 35h18" class="line" />
+    <rect x="238" y="16" width="52" height="30" rx="10" class="soft" /><path d="M248 46l-4 10l12-10" class="soft" />
+  </g>)}
+  {id === 'hiremind' && (<g>
+    <polyline points={wave} class="line" transform="translate(10 0) scale(0.6 1)" />
+    <circle cx="220" cy="35" r="20" class="soft" /><circle cx="213" cy="31" r="2.6" class="fill" /><circle cx="227" cy="31" r="2.6" class="fill" /><path d="M212 42q8 6 16 0" class="line" />
+    <path d="M262 18l18 6v12c0 10-8 16-18 20c-10-4-18-10-18-20v-12z" class="soft" /><path d="M254 37l6 6l10-12" class="line" />
+  </g>)}
+  {id === 'biat' && (<g>
+    {pts.map(([x, y]) => <circle cx={x} cy={y} r="2.6" class="fill" />)}
+    <circle cx="276" cy="54" r="3" class="neg" /><circle cx="276" cy="54" r="9" class="ring" />
+  </g>)}
+  {id === 'mlops' && (<g>
+    <ellipse cx="150" cy="35" rx="110" ry="22" class="line" />
+    {[[40, 35], [150, 13], [260, 35], [150, 57]].map(([x, y]) => <circle cx={x} cy={y} r="9" class="fill" />)}
+  </g>)}
+  {id === 'sas' && (<g>
+    {[0, 1, 2, 3, 4].map((r) => <rect x={14 + (r % 2) * 10} y={10 + r * 11} width={[70, 52, 64, 40, 58][r]} height="5" rx="2.5" class="soft" />)}
+    <path d="M110 35h40" class="line arrow" />
+    {[0, 1, 2].map((r) => <rect x="170" y={10 + r * 18} width="50" height="13" rx="3" class="fill" />)}
+    <path d="M220 16h30v36h-30M250 34h20" class="line" /><rect x="268" y="26" width="20" height="16" rx="3" class="soft" />
+  </g>)}
+  {id === 'edu-r' && (<g>
+    {[[60, 22, 46, 12, 58], [150, 14, 40, 6, 52], [240, 28, 50, 18, 60]].map(([x, q1, q3, lo, hi]) => <g>
+      <path d={`M${x} ${lo}V${q1}M${x} ${q3}V${hi}`} class="line" />
+      <rect x={x - 18} y={q1} width="36" height={q3 - q1} rx="3" class="soft" />
+      <path d={`M${x - 18} ${(q1 + q3) / 2}h36`} class="line" />
+    </g>)}
+  </g>)}
+</svg>
+<style>
+  .art { display:block; width:100%; height:56px; margin:-4px 0 10px; }
+  .art .soft { fill:color-mix(in srgb, var(--c) 22%, transparent); stroke:var(--c); stroke-width:1.2; }
+  .art .fill { fill:var(--c); }
+  .art .neg { fill:#2a5be0; }
+  .art .line { fill:none; stroke:var(--c); stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
+  .art .ring { fill:none; stroke:#16193a; stroke-width:1.5; stroke-dasharray:3 3; }
+  .art .arrow { marker-end:none; }
+</style>

@@ -5,7 +5,7 @@ import {
 // Latent-space background: one point cloud per project. Purely decorative; the cards carry the content.
 const COLORS = [0xe23c64, 0x2a5be0, 0x0e9f78, 0xd9921a, 0x7b3fd8, 0x1a8fd6, 0xc2410c];
 const EDGE = new Vector3(2.6, 0, 0);
-const CENTERS = [[-1, -3, -1], [8, 6, 3], [10, -5, -4], [-4, -6, 3], [2, 8, -8], [6, -1, 6], [13, 1, -2]];
+const CENTERS = [[-1, -3, -1], [8, 6, 3], [10, -5, -4], [-4, -6, 3], [2, 8, -8], [3, -11, -2], [11, -1, -9]];
 
 export function initScene(canvasHost, cards, labelHost) {
   let renderer;
@@ -37,8 +37,11 @@ export function initScene(canvasHost, cards, labelHost) {
       arr[k * 3 + 1] = c[1] + gauss() * 1.4;
       arr[k * 3 + 2] = c[2] + gauss() * 1.7;
     }
+    // Opening animation: every point starts as random noise and converges to its cluster.
+    const from = new Float32Array(n * 3);
+    for (let k = 0; k < n * 3; k++) from[k] = (rnd() - 0.5) * 60;
     const geo = new BufferGeometry();
-    geo.setAttribute('position', new BufferAttribute(arr, 3));
+    geo.setAttribute('position', new BufferAttribute(reduce ? arr : from.slice(), 3));
     const mat = new PointsMaterial({ size: 0.2, color: COLORS[i % COLORS.length], transparent: true, opacity: 0.85, depthWrite: false });
     const pts = new Points(geo, mat);
     group.add(pts);
@@ -51,7 +54,7 @@ export function initScene(canvasHost, cards, labelHost) {
       card.querySelector('details').open = true;
     });
     labelHost.appendChild(label);
-    return { card, mat, label, center: new Vector3(...c), tags: card.dataset.tags.split('|'), level: 0, target: 0 };
+    return { card, mat, label, geo, from, to: arr, center: new Vector3(...c), tags: card.dataset.tags.split('|'), level: 0, target: 0 };
   });
 
   // Highlight state is driven by the cards (hover), the hero words (hover on mouse, tap/click on touch)
@@ -126,6 +129,8 @@ export function initScene(canvasHost, cards, labelHost) {
   addEventListener('resize', resize); resize();
 
   let t = 0;
+  let prog = reduce ? 1 : 0;
+  const t0 = performance.now();
   function frame() {
     t += reduce ? 0 : 0.0016;
     group.rotation.y = -0.45 + t + mx * 0.5;
@@ -144,6 +149,16 @@ export function initScene(canvasHost, cards, labelHost) {
       c.label.style.display = hide ? 'none' : '';
     });
     pickCluster();
+    if (prog < 1) {
+      prog = Math.min(1, (performance.now() - t0) / 2200);
+      const e = 1 - Math.pow(1 - prog, 3);
+      clusters.forEach((c) => {
+        const pos = c.geo.attributes.position.array;
+        for (let k = 0; k < pos.length; k++) pos[k] = c.from[k] + (c.to[k] - c.from[k]) * e;
+        c.geo.attributes.position.needsUpdate = true;
+      });
+      clusters.forEach((c) => { c.label.style.opacity = String(Math.max(0, (prog - 0.6) / 0.4)); });
+    }
     renderer.render(scene, camera);
     if (!reduce) requestAnimationFrame(frame);
   }
