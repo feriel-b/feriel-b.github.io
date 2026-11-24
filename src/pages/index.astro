@@ -16,7 +16,7 @@ const tags = [...new Set(projects.flatMap((p) => p.tags))].sort();
   <div id="labels"></div>
 
   <header class="wrap hero">
-    <p class="eyebrow">Feriel Bouguecha · Master 2 · Data science &amp; ML</p>
+    <p class="eyebrow">Feriel Bouguecha · Master 2 · Data science &amp; AI</p>
     <h1>
       I build <button class="w" data-tag="LLM" style="--a:.8">LLM</button>,
       <button class="w" data-tag="RAG" style="--a:.6">RAG</button> and
@@ -41,7 +41,7 @@ const tags = [...new Set(projects.flatMap((p) => p.tags))].sort();
             <ul class="stack">{p.stack.map((s) => <li>{s}</li>)}</ul>
             <details>
               <summary>What I did</summary>
-              <p class="role"><strong>Role:</strong> {p.role}</p>
+              {p.role && <p class="role"><strong>Role:</strong> {p.role}</p>}
               <ul>{p.did.map((d) => <li>{d}</li>)}</ul>
               {p.note && <p class="note">{p.note}</p>}
               {p.links.length > 0 && (<p class="plinks">{p.links.map((l) => <a href={l.url}>{l.label} ↗</a>)}</p>)}
