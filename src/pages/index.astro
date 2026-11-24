@@ -1,0 +1,121 @@
+---
+import projects from '../data/projects.json';
+const tags = [...new Set(projects.flatMap((p) => p.tags))].sort();
+---
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Feriel Bouguecha · Data science & ML</title>
+  <meta name="description" content="Portfolio of Feriel Bouguecha: LLMs, RAG, MLOps and applied machine learning." />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='7' fill='%232d5bff'/><text x='16' y='23' font-size='20' text-anchor='middle' fill='white' font-family='sans-serif'>F</text></svg>" />
+</head>
+<body>
+  <div id="scene" aria-hidden="true"></div>
+  <div id="labels"></div>
+
+  <header class="wrap hero">
+    <p class="eyebrow">Feriel Bouguecha · Master 2 · Data science &amp; ML</p>
+    <h1>
+      I build <button class="w" data-tag="LLM" style="--a:.8">LLM</button>,
+      <button class="w" data-tag="RAG" style="--a:.6">RAG</button> and
+      <button class="w" data-tag="MLOps" style="--a:.45">MLOps</button> systems and
+      <button class="w" data-tag="XAI" style="--a:.85">test</button> whether they can
+      <button class="w" data-tag="XAI" style="--a:.7">be&nbsp;trusted</button>.
+    </h1>
+    <p class="lead">Looking for a Master 2 internship. Hover a highlighted word to see the projects behind it.</p>
+    <p class="links"><a href="https://github.com/feriel-b">GitHub</a></p>
+  </header>
+
+  <main class="wrap">
+    <section aria-labelledby="work">
+      <h2 id="work">Selected work</h2>
+      <div class="grid">
+        {projects.map((p, i) => (
+          <article class="card" data-id={p.id} data-name={p.short} data-tags={p.tags.join('|')}>
+            <p class="kind">{p.context}</p>
+            <h3>{p.title}</h3>
+            <p class="pitch">{p.pitch}</p>
+            <ul class="stack">{p.stack.map((s) => <li>{s}</li>)}</ul>
+            <details>
+              <summary>What I did</summary>
+              <p class="role"><strong>Role:</strong> {p.role}</p>
+              <ul>{p.did.map((d) => <li>{d}</li>)}</ul>
+              {p.note && <p class="note">{p.note}</p>}
+              {p.links.length > 0 && (<p class="plinks">{p.links.map((l) => <a href={l.url}>{l.label} ↗</a>)}</p>)}
+            </details>
+          </article>
+        ))}
+      </div>
+    </section>
+    <section aria-labelledby="more" class="more">
+      <h2 id="more">More work</h2>
+      <ul class="morelist">
+        <li><a href="https://github.com/feriel-b/DataPreparation_Myocardial-infarction-complications-ML"><strong>Myocardial infarction complications</strong></a> · data-preparation mini project on the UCI heart-attack dataset: cleaning, scaling, feature selection (mutual information, chi-square) and PCA.</li>
+        <li><strong>Emotional speech with diffusion models</strong> · deep-learning notebooks on emotion detection and generation with the EmoDB and RAVDESS datasets (private repository).</li>
+      </ul>
+    </section>
+
+    <section aria-labelledby="contact" class="more">
+      <h2 id="contact">Contact</h2>
+      <p><a href="https://github.com/feriel-b">GitHub</a></p>
+    </section>
+  </main>
+
+  <footer class="wrap foot">© {new Date().getFullYear()} Feriel Bouguecha</footer>
+
+  <script>
+    import { initScene } from '../scripts/scene.js';
+    initScene(
+      document.getElementById('scene'),
+      [...document.querySelectorAll('.card')],
+      document.getElementById('labels'),
+    );
+  </script>
+
+  <style is:global>
+    :root { --fg:#16193a; --mut:#474d73; --card:rgba(255,255,255,.5); --line:rgba(255,255,255,.75); --acc:#3a4fd8; --chip:rgba(30,30,90,.09); }
+    * { box-sizing: border-box; }
+    html { min-height:100%; }
+    body { margin:0; min-height:100vh; color:var(--fg); font:16px/1.55 system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
+      background:linear-gradient(145deg,#aebcee 0%,#c7b3e9 42%,#ebb4c8 78%,#f3c3a8 100%) fixed; }
+    #scene { position:fixed; inset:0; z-index:0; pointer-events:none; }
+    #labels { position:fixed; inset:0; z-index:1; pointer-events:none; }
+    .plabel { position:absolute; left:0; top:0; pointer-events:auto; cursor:pointer; font:600 13px system-ui; color:var(--fg);
+      background:rgba(255,255,255,.55); border:1px solid var(--line); padding:3px 11px; border-radius:99px; backdrop-filter:blur(8px); white-space:nowrap; transition:background .2s; }
+    .plabel.active { background:#fff; box-shadow:0 4px 18px rgba(30,30,90,.25); }
+    .wrap { position:relative; z-index:2; max-width:1080px; margin:0 auto; padding:0 20px; }
+    a { color:var(--acc); }
+    .hero { padding-top:64px; padding-bottom:32px; }
+    .eyebrow { color:var(--mut); font-size:13px; letter-spacing:.08em; text-transform:uppercase; margin:0 0 6px; }
+    h1 { font-size:clamp(34px,6.2vw,62px); line-height:1.16; letter-spacing:-.025em; margin:18px 0 16px; max-width:12.5em; font-weight:700; }
+    .w { font:inherit; color:inherit; letter-spacing:inherit; border:0; border-radius:10px; padding:0 8px; margin:0 -2px; cursor:default; background:rgba(226,60,100,var(--a)); }
+    .w:focus-visible { outline:2px solid var(--fg); outline-offset:2px; }
+    .lead { font-size:18px; color:var(--mut); max-width:30em; margin:0 0 10px; }
+    .links a { font-weight:600; }
+    h2 { font-size:22px; margin:36px 0 14px; }
+    .grid { display:grid; gap:16px; grid-template-columns:repeat(auto-fill,minmax(min(100%,320px),1fr)); }
+    .card { background:var(--card); border:1px solid var(--line); border-radius:18px; padding:20px; backdrop-filter:blur(16px);
+      box-shadow:0 10px 34px rgba(30,30,90,.14); transition:transform .25s, opacity .25s, box-shadow .25s, background .25s; }
+    .card:hover, .card.hit { transform:translateY(-4px); background:rgba(255,255,255,.72); box-shadow:0 16px 44px rgba(30,30,90,.22); }
+    .card.dim { opacity:.45; }
+    .kind { font-size:13px; color:var(--mut); margin:0 0 6px; }
+    h3 { margin:0 0 8px; font-size:19px; line-height:1.25; }
+    .pitch { margin:0 0 12px; }
+    .stack { list-style:none; padding:0; margin:0 0 14px; display:flex; flex-wrap:wrap; gap:6px; }
+    .stack li { background:var(--chip); font-size:12.5px; padding:2px 9px; border-radius:6px; }
+    summary { cursor:pointer; font-weight:600; color:var(--acc); }
+    summary:focus-visible { outline:2px solid var(--acc); outline-offset:2px; }
+    details ul { padding-left:20px; margin:8px 0; }
+    details li { margin-bottom:6px; }
+    .role { margin:10px 0 0; }
+    .note { font-size:13.5px; color:var(--mut); font-style:italic; }
+    .plinks a { margin-right:14px; font-weight:600; }
+    .more { margin-top:20px; background:var(--card); border:1px solid var(--line); border-radius:18px; padding:4px 22px 18px; backdrop-filter:blur(16px); } .more h2 { margin-top:16px; } .morelist { padding-left:20px; margin:0; } .morelist li { margin-bottom:10px; max-width:46em; }
+    .foot { padding-top:48px; padding-bottom:36px; color:var(--mut); font-size:14px; }
+    @media (max-width:700px) { #scene { opacity:.3; } }
+    @media (prefers-reduced-motion: reduce) { .card { transition:none; } .card:hover, .card.hit { transform:none; } }
+  </style>
+</body>
+</html>
