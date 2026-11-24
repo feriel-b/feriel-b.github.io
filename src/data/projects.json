@@ -5,8 +5,20 @@
     "pitch": "QLoRA fine-tuned LLMs that classify table rows, then tested whether their explanations are faithful.",
     "context": "Research project, 2026",
     "kind": "Research",
-    "tags": ["LLM", "XAI", "Tabular ML"],
-    "stack": ["Python", "QLoRA", "SHAP", "AttnLRP", "XGBoost", "MLflow", "Jupyter"],
+    "tags": [
+      "LLM",
+      "XAI",
+      "Tabular ML"
+    ],
+    "stack": [
+      "Python",
+      "QLoRA",
+      "SHAP",
+      "AttnLRP",
+      "XGBoost",
+      "MLflow",
+      "Jupyter"
+    ],
     "role": "Solo project.",
     "did": [
       "Serialized rows from the Adult, Wine, CCPP and Student datasets into text and fine-tuned an LLM with QLoRA to predict from them.",
@@ -15,7 +27,8 @@
       "Kept classical baselines (XGBoost, LightGBM, CatBoost) next to the LLM, including a student-grade prediction task."
     ],
     "links": [],
-    "note": "Code is in a private repository."
+    "note": "Code is in a private repository.",
+    "short": "LLM on tabular data"
   },
   {
     "id": "due-diligence",
@@ -23,8 +36,21 @@
     "pitch": "A RAG platform that turns crypto-project documents into investor-ready due-diligence answers and reports.",
     "context": "Team project, ESPRIT, Jan–May 2025",
     "kind": "Team project",
-    "tags": ["LLM", "RAG", "NLP"],
-    "stack": ["Python", "FastAPI", "LangChain", "FAISS", "Qdrant", "LLaMA 3.2", "spaCy", "RAGAS"],
+    "tags": [
+      "LLM",
+      "RAG",
+      "NLP"
+    ],
+    "stack": [
+      "Python",
+      "FastAPI",
+      "LangChain",
+      "FAISS",
+      "Qdrant",
+      "LLaMA 3.2",
+      "spaCy",
+      "RAGAS"
+    ],
     "role": "Built the retrieval pipeline end to end on my branch.",
     "did": [
       "Collected data from the CoinGecko and Scorechain APIs and extracted text from PDFs.",
@@ -32,7 +58,17 @@
       "Built the RAG pipeline with hyperparameter tuning, question extraction and a knowledge graph.",
       "Added a first chatbot interface with multi-file upload."
     ],
-    "links": [{ "label": "My branch", "url": "https://github.com/bennourines/Due_Diligence_4DS2/tree/feriel" }, { "label": "Team repo", "url": "https://github.com/feriel-b/Due_Diligence_4DS2" }]
+    "links": [
+      {
+        "label": "My branch",
+        "url": "https://github.com/bennourines/Due_Diligence_4DS2/tree/feriel"
+      },
+      {
+        "label": "Team repo",
+        "url": "https://github.com/feriel-b/Due_Diligence_4DS2"
+      }
+    ],
+    "short": "Due Diligence RAG"
   },
   {
     "id": "hiremind",
@@ -40,8 +76,20 @@
     "pitch": "An automated candidate-screening agent that runs mock interviews and flags suspicious behaviour.",
     "context": "Team project, ESPRIT, Oct–Nov 2025",
     "kind": "Team project",
-    "tags": ["LLM", "Multimodal", "NLP"],
-    "stack": ["Python", "FastAPI", "Vosk", "DeepFace", "Stable Diffusion", "Streamlit", "Ollama"],
+    "tags": [
+      "LLM",
+      "Multimodal",
+      "NLP"
+    ],
+    "stack": [
+      "Python",
+      "FastAPI",
+      "Vosk",
+      "DeepFace",
+      "Stable Diffusion",
+      "Streamlit",
+      "Ollama"
+    ],
     "role": "Built the interview simulator, cheating detector, avatar generator and demo on my branch.",
     "did": [
       "Cheating detector: flags AI-written answers (perplexity check), unusual answer timing, several voices (audio fingerprinting) and gaze away from the camera.",
@@ -49,7 +97,13 @@
       "Avatar generator that reads a CV and creates an avatar with Stable Diffusion.",
       "Streamlit demo of the whole flow."
     ],
-    "links": [{ "label": "My branch", "url": "https://github.com/bennourines/AUTOATED-CANDIDATE-SCREENING-AGENT_HireMind_5DS2/tree/feriel" }]
+    "links": [
+      {
+        "label": "My branch",
+        "url": "https://github.com/bennourines/AUTOATED-CANDIDATE-SCREENING-AGENT_HireMind_5DS2/tree/feriel"
+      }
+    ],
+    "short": "HireMind"
   },
   {
     "id": "biat",
@@ -57,8 +111,18 @@
     "pitch": "A pipeline that groups companies by financial profile and flags the unusual ones, for credit analysis.",
     "context": "Summer internship, BIAT, 2025",
     "kind": "Internship",
-    "tags": ["Finance", "Anomaly detection", "Clustering"],
-    "stack": ["Python", "scikit-learn", "PyOD", "TensorFlow", "pandas"],
+    "tags": [
+      "Finance",
+      "Anomaly detection",
+      "Clustering"
+    ],
+    "stack": [
+      "Python",
+      "scikit-learn",
+      "PyOD",
+      "TensorFlow",
+      "pandas"
+    ],
     "role": "Designed and built the pipeline.",
     "did": [
       "Turned each financial ratio into a 0–9 decile score. Missing values count as the worst score when a higher ratio is better, and the best score when lower is better.",
@@ -67,7 +131,8 @@
       "Built a similarity search that finds a company's closest statistical twins."
     ],
     "links": [],
-    "note": "Confidential bank data: the method is described, the code and data are not published."
+    "note": "Confidential bank data: the method is described, the code and data are not published.",
+    "short": "BIAT segmentation"
   },
   {
     "id": "mlops",
@@ -75,8 +140,18 @@
     "pitch": "A churn model shipped with CI, containers and experiment tracking, not just a notebook.",
     "context": "Course project, ESPRIT, Feb 2025",
     "kind": "Course project",
-    "tags": ["MLOps", "Tabular ML"],
-    "stack": ["Python", "FastAPI", "MLflow", "Docker", "Jenkins", "Make"],
+    "tags": [
+      "MLOps",
+      "Tabular ML"
+    ],
+    "stack": [
+      "Python",
+      "FastAPI",
+      "MLflow",
+      "Docker",
+      "Jenkins",
+      "Make"
+    ],
     "role": "Solo project.",
     "did": [
       "Trained and tuned a churn classifier (SVM grid over C, kernel and gamma) and tracked every run in MLflow.",
@@ -84,7 +159,8 @@
       "Automated install, code checks, training and tests with a Makefile and a Jenkins pipeline."
     ],
     "links": [],
-    "note": "Code is in a private repository."
+    "note": "Code is in a private repository.",
+    "short": "MLOps churn"
   },
   {
     "id": "sas",
@@ -92,14 +168,24 @@
     "pitch": "Tools that read legacy SAS programs and extract which tables and libraries each one uses.",
     "context": "Internship, EY, Jun–Jul 2025",
     "kind": "Internship",
-    "tags": ["Data engineering", "Migration"],
-    "stack": ["Python", "SAS", "regex parsing", "pandas", "Excel"],
+    "tags": [
+      "Data engineering",
+      "Migration"
+    ],
+    "stack": [
+      "Python",
+      "SAS",
+      "regex parsing",
+      "pandas",
+      "Excel"
+    ],
     "role": "Wrote the extraction scripts.",
     "did": [
       "Parsed hundreds of SAS programs, stripping comments and finding permanent libraries through their LIBNAME statements.",
       "Extracted table-level reads and writes into Excel reports to plan the migration to Viya."
     ],
     "links": [],
-    "note": "Client material: description only."
+    "note": "Client material: description only.",
+    "short": "EY SAS migration"
   }
 ]
