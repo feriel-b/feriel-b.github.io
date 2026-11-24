@@ -25,7 +25,7 @@ const tags = [...new Set(projects.flatMap((p) => p.tags))].sort();
       <button class="w" data-tag="XAI" style="--a:.7">be&nbsp;trusted</button>.
     </h1>
     <p class="lead">Looking for a Master 2 internship. Hover a highlighted word to see the projects behind it.</p>
-    <p class="links"><a href="https://github.com/feriel-b">GitHub</a></p>
+    <p class="links"><a href="https://www.linkedin.com/in/feriel-bouguecha/">LinkedIn</a> <a href="https://github.com/feriel-b">GitHub</a></p>
   </header>
 
   <main class="wrap">
@@ -59,7 +59,7 @@ const tags = [...new Set(projects.flatMap((p) => p.tags))].sort();
 
     <section aria-labelledby="contact" class="more">
       <h2 id="contact">Contact</h2>
-      <p><a href="https://github.com/feriel-b">GitHub</a></p>
+      <p class="contact"><a href="https://www.linkedin.com/in/feriel-bouguecha/">LinkedIn</a> · <a href="https://github.com/feriel-b">GitHub</a> · <a href="mailto:feriel.bouguecha@gmail.com">feriel.bouguecha@gmail.com</a></p>
     </section>
   </main>
 
@@ -93,7 +93,8 @@ const tags = [...new Set(projects.flatMap((p) => p.tags))].sort();
     .w { font:inherit; color:inherit; letter-spacing:inherit; border:0; border-radius:10px; padding:0 8px; margin:0 -2px; cursor:default; background:rgba(226,60,100,var(--a)); }
     .w:focus-visible { outline:2px solid var(--fg); outline-offset:2px; }
     .lead { font-size:18px; color:var(--mut); max-width:30em; margin:0 0 10px; }
-    .links a { font-weight:600; }
+    .links a { font-weight:600; margin-right:16px; }
+    .contact a { font-weight:600; }
     h2 { font-size:22px; margin:36px 0 14px; }
     .grid { display:grid; gap:16px; grid-template-columns:repeat(auto-fill,minmax(min(100%,320px),1fr)); }
     .card { background:var(--card); border:1px solid var(--line); border-radius:18px; padding:20px; backdrop-filter:blur(16px);
