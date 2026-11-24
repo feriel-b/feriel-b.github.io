@@ -50,25 +50,46 @@ export function initScene(canvasHost, cards, labelHost) {
     return { card, mat, label, center: new THREE.Vector3(...c), tags: card.dataset.tags.split('|'), level: 0, target: 0 };
   });
 
-  // Highlight state is driven by the cards (hover) and by the hero words (data-tag).
-  let hoverId = null, hoverTag = null;
-  const refresh = () => clusters.forEach((c) => {
-    const on = hoverId ? c.card.dataset.id === hoverId : hoverTag ? c.tags.includes(hoverTag) : false;
-    const any = hoverId || hoverTag;
-    c.target = on ? 1 : any ? -1 : 0;
-    c.card.classList.toggle('hit', !!on && !!hoverTag && !hoverId);
-    c.card.classList.toggle('dim', c.target === -1 && !!hoverTag);
-    c.label.classList.toggle('active', on);
-  });
+  // Highlight state is driven by the cards (hover), the hero words (hover on mouse, tap/click on touch)
+  // and a readout line under the headline, so the effect is visible without scrolling.
+  let hoverId = null, hoverTag = null, stickyTag = null;
+  const matches = document.getElementById('matches');
+  const words = [...document.querySelectorAll('[data-tag]')];
+  const refresh = () => {
+    const tag = hoverTag || stickyTag;
+    clusters.forEach((c) => {
+      const on = hoverId ? c.card.dataset.id === hoverId : tag ? c.tags.includes(tag) : false;
+      const any = hoverId || tag;
+      c.target = on ? 1 : any ? -1 : 0;
+      c.card.classList.toggle('hit', !!on && !!tag && !hoverId);
+      c.card.classList.toggle('dim', c.target === -1 && !!tag);
+      c.label.classList.toggle('active', on);
+    });
+    words.forEach((w) => { w.classList.toggle('on', w.dataset.tag === tag); w.setAttribute('aria-pressed', String(w.dataset.tag === stickyTag)); });
+    if (matches) {
+      matches.textContent = '';
+      if (tag) {
+        const hits = clusters.filter((c) => c.tags.includes(tag));
+        const lead = document.createElement('span'); lead.textContent = `${tag}: `; matches.appendChild(lead);
+        hits.forEach((c) => {
+          const b = document.createElement('button');
+          b.type = 'button'; b.className = 'mchip'; b.textContent = c.card.dataset.name;
+          b.addEventListener('click', () => c.label.click());
+          matches.appendChild(b);
+        });
+      }
+    }
+  };
   cards.forEach((card) => {
     card.addEventListener('mouseenter', () => { hoverId = card.dataset.id; refresh(); });
     card.addEventListener('mouseleave', () => { hoverId = null; refresh(); });
   });
-  document.querySelectorAll('[data-tag]').forEach((w) => {
-    const on = () => { hoverTag = w.dataset.tag; refresh(); };
-    const off = () => { hoverTag = null; refresh(); };
-    w.addEventListener('mouseenter', on); w.addEventListener('mouseleave', off);
-    w.addEventListener('focus', on); w.addEventListener('blur', off);
+  words.forEach((w) => {
+    w.addEventListener('pointerenter', (e) => { if (e.pointerType === 'mouse') { hoverTag = w.dataset.tag; refresh(); } });
+    w.addEventListener('pointerleave', (e) => { if (e.pointerType === 'mouse') { hoverTag = null; refresh(); } });
+    w.addEventListener('click', () => { stickyTag = stickyTag === w.dataset.tag ? null : w.dataset.tag; refresh(); });
+    w.addEventListener('focus', () => { if (w.matches(':focus-visible')) { hoverTag = w.dataset.tag; refresh(); } });
+    w.addEventListener('blur', () => { hoverTag = null; refresh(); });
   });
 
   let mx = 0, my = 0;
