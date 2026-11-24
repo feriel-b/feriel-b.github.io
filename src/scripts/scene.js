@@ -2,6 +2,7 @@ import * as THREE from 'three';
 
 // Latent-space background: one point cloud per project. Purely decorative; the cards carry the content.
 const COLORS = [0xe23c64, 0x2a5be0, 0x0e9f78, 0xd9921a, 0x7b3fd8, 0x1a8fd6, 0xc2410c];
+const EDGE = new THREE.Vector3(2.6, 0, 0);
 const CENTERS = [[-1, -3, -1], [8, 6, 3], [10, -5, -4], [-4, -6, 3], [2, 8, -8], [6, -1, 6], [-7, 1, 5]];
 
 export function initScene(canvasHost, cards, labelHost) {
@@ -52,17 +53,18 @@ export function initScene(canvasHost, cards, labelHost) {
 
   // Highlight state is driven by the cards (hover), the hero words (hover on mouse, tap/click on touch)
   // and a readout line under the headline, so the effect is visible without scrolling.
-  let hoverId = null, hoverTag = null, stickyTag = null;
+  let hoverId = null, clusterId = null, hoverTag = null, stickyTag = null;
   const matches = document.getElementById('matches');
   const words = [...document.querySelectorAll('[data-tag]')];
   const refresh = () => {
     const tag = hoverTag || stickyTag;
+    const id = hoverId || clusterId;
     clusters.forEach((c) => {
-      const on = hoverId ? c.card.dataset.id === hoverId : tag ? c.tags.includes(tag) : false;
-      const any = hoverId || tag;
+      const on = id ? c.card.dataset.id === id : tag ? c.tags.includes(tag) : false;
+      const any = id || tag;
       c.target = on ? 1 : any ? -1 : 0;
-      c.card.classList.toggle('hit', !!on && !!tag && !hoverId);
-      c.card.classList.toggle('dim', c.target === -1 && !!tag);
+      c.card.classList.toggle('hit', !!on && (!!tag || !!clusterId) && !hoverId);
+      c.card.classList.toggle('dim', c.target === -1 && !!tag && !id);
       c.label.classList.toggle('active', on);
     });
     words.forEach((w) => { w.classList.toggle('on', w.dataset.tag === tag); w.setAttribute('aria-pressed', String(w.dataset.tag === stickyTag)); });
@@ -92,8 +94,23 @@ export function initScene(canvasHost, cards, labelHost) {
     w.addEventListener('blur', () => { hoverTag = null; refresh(); });
   });
 
-  let mx = 0, my = 0;
-  addEventListener('pointermove', (e) => { mx = e.clientX / innerWidth - 0.5; my = e.clientY / innerHeight - 0.5; }, { passive: true });
+  let mx = 0, my = 0, px = -1, py = -1, mouseOn = false;
+  addEventListener('pointermove', (e) => {
+    mx = e.clientX / innerWidth - 0.5; my = e.clientY / innerHeight - 0.5;
+    mouseOn = e.pointerType === 'mouse'; px = e.clientX; py = e.clientY;
+  }, { passive: true });
+  document.addEventListener('pointerleave', () => { mouseOn = false; }, { passive: true });
+  const edge = new THREE.Vector3();
+  // Mouse over a cluster (screen-space distance to its centre) highlights it and its card.
+  function pickCluster() {
+    let best = null, bestScore = 1;
+    if (mouseOn && innerWidth >= 700) clusters.forEach((c) => {
+      const score = Math.hypot(px - c.sx, py - c.sy) / c.sr;
+      if (score < bestScore) { bestScore = score; best = c; }
+    });
+    const id = best ? best.card.dataset.id : null;
+    if (id !== clusterId) { clusterId = id; refresh(); document.body.style.cursor = id ? 'pointer' : ''; }
+  }
 
   const v = new THREE.Vector3();
   function resize() {
@@ -117,9 +134,13 @@ export function initScene(canvasHost, cards, labelHost) {
       c.mat.opacity = 0.85 + c.level * 0.15 - (c.level < 0 ? -c.level * 0.55 : 0);
       c.mat.size = 0.2 + Math.max(c.level, 0) * 0.14;
       v.copy(c.center).applyMatrix4(group.matrixWorld).project(camera);
+      c.sx = (v.x * 0.5 + 0.5) * innerWidth; c.sy = (-v.y * 0.5 + 0.5) * innerHeight;
+      edge.copy(c.center).add(EDGE).applyMatrix4(group.matrixWorld).project(camera);
+      c.sr = Math.max(40, Math.hypot((edge.x * 0.5 + 0.5) * innerWidth - c.sx, (-edge.y * 0.5 + 0.5) * innerHeight - c.sy));
       c.label.style.transform = `translate(${(v.x * 0.5 + 0.5) * innerWidth}px, ${(-v.y * 0.5 + 0.5) * innerHeight - 40}px) translate(-50%,-100%)`;
       c.label.style.display = hide ? 'none' : '';
     });
+    pickCluster();
     renderer.render(scene, camera);
     if (!reduce) requestAnimationFrame(frame);
   }

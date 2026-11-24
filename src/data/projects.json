@@ -3,7 +3,7 @@
     "id": "llm-tabular",
     "title": "Can an LLM explain its own tabular predictions?",
     "pitch": "QLoRA fine-tuned LLMs that classify table rows, then tested whether their explanations are faithful.",
-    "context": "Research project, 2026",
+    "context": "End-of-studies project (PFE), 2026",
     "kind": "Research",
     "tags": [
       "LLM",
@@ -19,7 +19,7 @@
       "MLflow",
       "Jupyter"
     ],
-    "role": "Solo project.",
+    "role": "",
     "did": [
       "Serialized rows from the Adult, Wine, CCPP and Student datasets into text and fine-tuned an LLM with QLoRA to predict from them.",
       "Compared three explanation methods for faithfulness and agreement: SHAP, AttnLRP and chain-of-thought.",
