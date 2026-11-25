@@ -22,7 +22,7 @@
     "role": "",
     "did": [
       "Serialized rows from the Adult, Wine, CCPP and Student datasets into text and fine-tuned an LLM with QLoRA to predict from them.",
-      "Compared three explanation methods for faithfulness and agreement: SHAP, AttnLRP and chain-of-thought.",
+      "Compared three explanation methods for faithfulness and agreement: SHAP, AttnLRP and the model's own self-explanations.",
       "Scored each prediction by full-label log-probability, because the first token is shared between labels, and used a permutation SHAP estimator that works on string columns.",
       "Kept classical baselines (XGBoost, LightGBM, CatBoost) next to the LLM, including a student-grade prediction task."
     ],
